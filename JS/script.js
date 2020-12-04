@@ -35,9 +35,9 @@ let personalMovieDB = {
 
 function rememberMyFilms() {
     for (let i = 0; i < 2; i++) {
-        let a = prompt(`Сообщите название фильма №${i+1}?`, ''),
+        let a = prompt(`Сообщите название фильма №${i + 1}?`, ''),
             b = prompt('На сколько оцените его?', '');
-        if (a != null && b != null && a != '' && b != '' && a.length < 50) {
+        if (a != null && b != null && a != '' && b != '' && a.length < 50 && !isNaN(b)) {
             personalMovieDB.movies[a] = b;
             console.log('Данные внесены успешно');
         } else {
@@ -49,12 +49,12 @@ function rememberMyFilms() {
 
 rememberMyFilms();
 
-function detectPersonalLevel () {
+function detectPersonalLevel() {
     if (personalMovieDB.count < 10) {
         console.log('Просмотрено довольно мало фильмов');
     } else if (personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
         console.log('Вы классический зритель');
-    
+
     } else if (personalMovieDB.count >= 30) {
         console.log('Вы киноман');
     } else {
@@ -62,26 +62,35 @@ function detectPersonalLevel () {
     }
 }
 
-detectPersonalLevel ();
+detectPersonalLevel();
 
-function showMyDB (hidden) {
+function showMyDB(hidden) {
     if (!hidden) {
         console.log(personalMovieDB);
     }
 }
 
-showMyDB (personalMovieDB.privat);
+showMyDB(personalMovieDB.privat);
 
-function writeYourGenres () {
+function writeYourGenres() {
     for (let i = 0; i <= 2; i++) {
-        personalMovieDB.genres[i] = prompt('Ваш любимый жанр под номером ' + (i+1));
+
+        let genre = prompt('Ваш любимый жанр под номером ' + (i + 1));
+
+        if (isNaN(genre) && genre != '' && genre != null ) {
+            personalMovieDB.genres[i] = genre;
+        } else {
+            console.log('error');
+            i--;
+        }
+        
     }
 
 }
 
-writeYourGenres ();
+writeYourGenres();
 
-/* 
-3) Создать функцию writeYourGenres в которой пользователь будет 3 раза отвечать на вопрос 
+/*
+3) Создать функцию writeYourGenres в которой пользователь будет 3 раза отвечать на вопрос
 "Ваш любимый жанр под номером ${номер по порядку}". Каждый ответ записывается в массив данных
 genres */
