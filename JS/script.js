@@ -1,98 +1,46 @@
-/* Задание на урок:
+/* Задания на урок:
 
-1) У нас уже есть рабочее приложение, состоящее из отдельных функций. Представьте, что
-перед вами стоит задача переписать его так, чтобы все функции стали методами объекта personalMovieDB
-Такое случается в реальных продуктах при смене технологий или подхода к архитектуре программы
+2) Изменить жанр фильма, поменять "комедия" на "драма"
 
-2) Создать метод toggleVisibleMyDB, который при вызове будет проверять свойство privat. Если оно false - он
-переключает его в true, если true - переключает в false. Протестировать вместе с showMyDB.
+3) Изменить задний фон постера с фильмом на изображение "bg.jpg". Оно лежит в папке img.
+Реализовать только при помощи JS
 
-3) В методе writeYourGenres запретить пользователю нажать кнопку "отмена" или оставлять пустую строку. 
-Если он это сделал - возвращать его к этому же вопросу. После того, как все жанры введены - 
-при помощи метода forEach вывести в консоль сообщения в таком виде:
-"Любимый жанр #(номер по порядку, начиная с 1) - это (название из массива)"*/
+4) Список фильмов на странице сформировать на основании данных из этого JS файла.
+Отсортировать их по алфавиту 
+
+5) Добавить нумерацию выведенных фильмов */
 
 'use strict';
 
-let personalMovieDB = {
-    count: 0,
-    movies: {},
-    actors: {},
-    genres: [],
-    privat: false,
-    start: function () {
-        personalMovieDB.count = +prompt('Сколько фильмов вы уже посмотрели?', '');
-
-        while (personalMovieDB.count == '' || personalMovieDB.count == null || isNaN(personalMovieDB.count)) {
-            console.log('Введенная информация о количестве фильмов не прошла валидацию');
-            personalMovieDB.count = +prompt('Сколько фильмов вы уже посмотрели?', '');
-        }
-        return personalMovieDB.count;
-
-    },
-    rememberMyFilms: function () {
-        for (let i = 0; i < 2; i++) {
-            let a = prompt(`Сообщите название фильма №${i + 1}?`, ''),
-                b = prompt('На сколько оцените его?', '');
-            if (a != null && b != null && a != '' && b != '' && a.length < 50 && !isNaN(b)) {
-                personalMovieDB.movies[a] = b;
-                console.log('Данные внесены успешно');
-            } else {
-                console.log('Данные не внесены, Ошибка');
-                i--;
-            }
-        }
-    },
-    detectPersonalLevel: function () {
-        if (personalMovieDB.count < 10) {
-            console.log('Просмотрено довольно мало фильмов');
-        } else if (personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
-            console.log('Вы классический зритель');
-
-        } else if (personalMovieDB.count >= 30) {
-            console.log('Вы киноман');
-        } else {
-            console.log('Произошла ошибка');
-        }
-    },
-    showMyDB: function () {
-        if (!personalMovieDB.privat) {
-            console.log(personalMovieDB);
-        }
-    },
-    toggleVisibleMyDB: function () {
-        if (personalMovieDB.privat) {
-            personalMovieDB.privat = false;
-        } else { personalMovieDB.privat = true; }
-    },
-    writeYourGenres: function () {
-        for (let i = 0; i <= 2; i++) {
-
-            let genres = prompt('Ваш любимый жанр под номером ' + (i + 1));
-            genres = genres.substr(0, 1).toUpperCase() + genres.substr(1);
-            if (isNaN(genres) && genres != '' && genres != null) {
-                personalMovieDB.genres[i] = genres;
-                personalMovieDB.genres.sort();
-            } else {
-                console.log('error');
-                i--;
-            }
-
-        }
-        personalMovieDB.genres.forEach((item, i) => {
-           console.log(`Любимый жанр ${i + 1} - это ${item}`) ;
-        });
-
-       
-
-    }
-    
-
+const movieDB = {
+    movies: [
+        "Логан",
+        "Лига справедливости",
+        "Ла-ла лэнд",
+        "Одержимость",
+        "Скотт Пилигрим против..."
+    ]
 };
 
-/* personalMovieDB.start();
-personalMovieDB.rememberMyFilms();
-personalMovieDB.detectPersonalLevel();*/
-personalMovieDB.writeYourGenres(); 
-/*personalMovieDB.toggleVisibleMyDB();*/
-personalMovieDB.showMyDB();
+const adv = document.querySelectorAll('.promo__adv img'),
+    poster = document.querySelector('.promo__bg'),
+    genre = poster.querySelector('.promo__genre'),
+    moviesList = document.querySelector('.promo__interactive-list');
+
+
+console.log(moviesList);
+adv.forEach(item => {
+    item.remove();
+});
+
+genre.textContent = 'Драма';
+poster.style.backgroundImage = 'url("/img/bg.jpg")';
+moviesList.innerHTML = '';
+movieDB.movies.sort();
+movieDB.movies.forEach((film, i) => {
+    moviesList.innerHTML += `
+    <li class="promo__interactive-item"> ${i + 1}.${film}
+        <div class="delete"></div>
+    </li>
+    `;
+});
